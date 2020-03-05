@@ -1,43 +1,9 @@
 import React, { Component } from "react";
-import {
-  BackHandler,
-  Button,
-  NativeModules,
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
-
-const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
-});
+import { Button, NativeModules, StyleSheet, Text, View } from "react-native";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-  }
-
-  async requestPermissions() {
-    try {
-      var result = 1;
-      // Request permissions
-      var result = await new Promise((resolve, reject) => {
-        NativeModules.PresentationViewAndroidModule.requestPermissions(
-          "com.example",
-          resolve,
-          reject
-        );
-      });
-      if (result !== 1) {
-        return BackHandler.exitApp();
-      }
-    } catch (error) {
-      return BackHandler.exitApp();
-    }
   }
 
   async presentation() {
@@ -57,13 +23,13 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-        <Button
-          title={"request Permissions"}
-          onPress={this.requestPermissions.bind(this)}
-        />
+        <Text style={styles.welcome}>
+          Welcome to React-Native-Presentation-View-Android!
+        </Text>
+        <Text style={styles.instructions}>
+          To get started, connect device to screen then press the presentation
+          button below.
+        </Text>
         <Button title={"Presentation"} onPress={this.presentation.bind(this)} />
       </View>
     );

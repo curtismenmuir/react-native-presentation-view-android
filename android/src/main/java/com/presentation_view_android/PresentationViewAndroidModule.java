@@ -27,8 +27,6 @@ public class PresentationViewAndroidModule extends ReactContextBaseJavaModule im
     private Callback success;
     private Callback failure;
     private final int PRESENTATION_ACTIVITY_REQUEST = 1;
-    private final int OVERLAY_PERMISSIONS_REQUEST = 2;
-    private final int STORAGE_PERMISSIONS_REQUEST = 3;
 
     public PresentationViewAndroidModule(ReactApplicationContext context) {
         super(context);
@@ -41,13 +39,6 @@ public class PresentationViewAndroidModule extends ReactContextBaseJavaModule im
         return "PresentationViewAndroidModule";
     }
 
-    @ReactMethod
-    public void requestPermissions(final String packageName, final Callback onSuccess, final Callback onFailure) {
-        success = onSuccess;
-        failure = onFailure;
-        checkOverlayPermissions(OVERLAY_PERMISSIONS_REQUEST, packageName);
-    }
-
     // Currently, no use for this method, but must provide Override when
     // implementing ActivityEventListener
     @Override
@@ -56,39 +47,10 @@ public class PresentationViewAndroidModule extends ReactContextBaseJavaModule im
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        if (requestCode == OVERLAY_PERMISSIONS_REQUEST) {
-            if (Settings.canDrawOverlays(reactContext)) {
-                checkStoragePermissions(STORAGE_PERMISSIONS_REQUEST);
-            } else {
-                failure.invoke(-1);
-            }
-        } else if (requestCode == STORAGE_PERMISSIONS_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                success.invoke(1);
-            } else {
-                failure.invoke(-1);
-            }
-        }
-    }
-
-    protected void checkOverlayPermissions(int requestCode, String packageName) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(reactContext)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName));
-            Activity activity = getCurrentActivity();
-            activity.startActivityForResult(intent, requestCode);
-        } else {
-            checkStoragePermissions(STORAGE_PERMISSIONS_REQUEST);
-        }
-    }
-
-    protected void checkStoragePermissions(int requestCode) {
-        if (ContextCompat.checkSelfPermission(reactContext,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            Activity currentActivity = reactContext.getCurrentActivity();
-            Intent intent = new Intent(reactContext, PermissionsActivity.class);
-            currentActivity.startActivityForResult(intent, requestCode);
-        } else {
+        if (resultCode == Activity.RESULT_OK) {
             success.invoke(1);
+        } else {
+            failure.invoke(-1);
         }
     }
 
@@ -97,6 +59,8 @@ public class PresentationViewAndroidModule extends ReactContextBaseJavaModule im
         if (displayComponent == null) {
             onFailure.invoke(-1);
         }
+        success = onSuccess;
+        failure = onFailure;
         Activity currentActivity = getCurrentActivity();
         Intent intent = new Intent(reactContext, PresentationActivity.class);
         intent.putExtra("displayComponent", displayComponent);
