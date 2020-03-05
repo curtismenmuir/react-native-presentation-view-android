@@ -1,0 +1,25 @@
+{
+  "name": "react-native-presentation-view-android",
+  "title": "React Native Presentation View Android",
+  "version": "1.0.0",
+  "description": "Example React-Native app demonstrating how to configure Androids Presentation view in a React-Native app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/curtismenmuir/react-native-presentation-view-android.git",
+    "baseUrl": "https://github.com/curtismenmuir/react-native-presentation-view-android"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": {
+    "name": "Curtis Menmuir",
+    "email": "curtismenmuir@gmail.com"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md"
+}

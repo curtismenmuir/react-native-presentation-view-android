@@ -1,0 +1,84 @@
+buildscript {
+    repositories {
+        jcenter()
+        google()
+        maven {
+            url "http://repo.commonsware.com"
+        }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    buildToolsVersion "28.0.3"
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+    lintOptions {
+        abortOnError false
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+
+repositories {
+    mavenCentral()
+    google()
+    jcenter()
+    maven {
+        url "http://repo.commonsware.com"
+    }
+    maven {
+        url "$rootDir/../example/node_modules/react-native/android"
+    }
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
+}
+
+dependencies {
+    implementation 'com.facebook.react:react-native:+'
+    implementation 'com.commonsware.cwac:layouts:0.4.5'
+    implementation 'com.commonsware.cwac:presentation:0.5.3'
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+}
+
+allprojects {
+    repositories {
+        maven {
+            url "$rootDir/../example/node_modules/react-native/android"
+        }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+    }
+}
+subprojects {
+    afterEvaluate {project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion 28
+                buildToolsVersion "28.0.3"
+            }
+        }
+    }
+}

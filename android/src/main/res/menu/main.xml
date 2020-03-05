@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/menu_media_route"
+        android:actionProviderClass="android.app.MediaRouteActionProvider"
+        android:orderInCategory="1"
+        android:showAsAction="always"
+        android:title="@string/menu_present_to"
+        android:visible="true"
+        tools:ignore="AppCompatResource"/>
+
+</menu>

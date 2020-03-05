@@ -1,0 +1,62 @@
+buildscript {
+    ext {
+        buildToolsVersion = "28.0.3"
+        minSdkVersion = 23
+        compileSdkVersion = 28
+        targetSdkVersion = 27
+        supportLibVersion = "28.0.0"
+    }
+    repositories {
+        google()
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url "https://maven.google.com" }
+        maven {
+            url "http://repo.commonsware.com"
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.3.2'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+        maven {
+            url "$rootDir/../node_modules/react-native/android"
+        }
+        maven { url 'https://jitpack.io' }
+        maven { url "https://maven.google.com" }
+        maven {
+            url "http://repo.commonsware.com"
+        }
+    }
+}
+
+subprojects { subproject ->
+    afterEvaluate {
+        if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
+            android {
+                compileSdkVersion rootProject.ext.compileSdkVersion
+                buildToolsVersion rootProject.ext.buildToolsVersion
+
+                variantFilter { variant ->
+                    def names = variant.flavors*.name
+                    if (
+                            names.contains("reactNative51") ||
+                            names.contains("reactNative55") ||
+                            names.contains("reactNative56") ||
+                            names.contains("reactNative57")
+                    ) {
+                        setIgnore(true)
+                    }
+                }
+            }
+        }
+    }
+}
