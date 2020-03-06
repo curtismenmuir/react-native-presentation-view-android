@@ -2,6 +2,8 @@
 
 ## Description
 
+React Native app demonstrating how to configure an Android Presentation view in a React-Native app using `commonsware.cwac:layouts` and `commonsware.cwac:presentation`. JS view is used for the presentation view, with an Android control view being displayed on the device.
+
 ## Important
 
 - Global dependencies: yarn, react-native-cli, android-studio
